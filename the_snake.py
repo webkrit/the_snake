@@ -89,6 +89,7 @@ class Apple(GameObject):
         self.occupied_positions = (
             occupied_positions if occupied_positions is not None else []
         )  # Занятые позии, создаем новый список если None
+        self.randomize_position()
 
     def randomize_position(self):
         """Генерирует случайные координаты для яблока, избегая занятых"""
