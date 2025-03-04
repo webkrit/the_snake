@@ -83,22 +83,21 @@ class Apple(GameObject):
         draw(): Отображает яблоко на экране, отображая его цвет и границу.
     """
 
-    def __init__(self):
+    def __init__(self, occupied_positions=[]):
         super().__init__()
         self.body_color = APPLE_COLOR
-        # self.occupied_positions = occupied_positions  #параметр:список занятых клеток
+        self.occupied_positions = occupied_positions  # Передаем занятые
         self.randomize_position()
 
     def randomize_position(self):
-        """Генерирует случайные координаты для яблока"""
-        self.position = (
-            randint(0, GRID_WIDTH - 1) * GRID_SIZE,
-            randint(0, GRID_HEIGHT - 1) * GRID_SIZE
-        )
-        # if new_position not in self.occupied_positions:
-        #     self.position = new_position
-        
-        return self.position
+        """Генерирует случайные координаты для яблока, избегая занятых"""
+        while True:
+            self.position = (
+                randint(0, GRID_WIDTH - 1) * GRID_SIZE,
+                randint(0, GRID_HEIGHT - 1) * GRID_SIZE
+            )
+            if self.position not in self.occupied_positions:
+                return self.position
 
     def draw(self):
         """Отображает яблоко на экране, отображая его цвет и границу."""
@@ -145,7 +144,7 @@ class Snake(GameObject):
     def move(self):
         """Обновляет позиции сегментов змейки"""
         head_x, head_y = self.get_head_position()
-        dir_x, dir_y = self.direction
+        dir_x, dir_y = self.direction  # распаковка направлений
         new_head = (
             (head_x + dir_x * GRID_SIZE) % SCREEN_WIDTH,
             (head_y + dir_y * GRID_SIZE) % SCREEN_HEIGHT
@@ -210,8 +209,8 @@ def main():
     игры(сталкиваение с собственным телом).
     """
     pygame.init()
-    apple = Apple()
     snake = Snake()
+    apple = Apple(occupied_positions=snake.positions)
 
     while True:
         clock.tick(SPEED)
@@ -229,7 +228,7 @@ def main():
             apple.randomize_position()
 
         # Проверка столкновения змейки с собой
-        if snake.get_head_position() in snake.positions[1:]:
+        elif snake.get_head_position() in snake.positions[1:]:
             snake.reset()
 
         apple.draw()  # Отрисовка яблока
