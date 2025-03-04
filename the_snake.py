@@ -83,11 +83,12 @@ class Apple(GameObject):
         draw(): Отображает яблоко на экране, отображая его цвет и границу.
     """
 
-    def __init__(self, occupied_positions=[]):
+    def __init__(self, occupied_positions=None):
         super().__init__()
         self.body_color = APPLE_COLOR
-        self.occupied_positions = occupied_positions  # Передаем занятые
-        self.randomize_position()
+        self.occupied_positions = (
+            occupied_positions if occupied_positions is not None else []
+        )  # Занятые позии, создаем новый список если None
 
     def randomize_position(self):
         """Генерирует случайные координаты для яблока, избегая занятых"""
