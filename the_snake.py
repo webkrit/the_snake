@@ -86,6 +86,7 @@ class Apple(GameObject):
     def __init__(self):
         super().__init__()
         self.body_color = APPLE_COLOR
+        # self.occupied_positions = occupied_positions  #параметр:список занятых клеток
         self.randomize_position()
 
     def randomize_position(self):
@@ -94,6 +95,9 @@ class Apple(GameObject):
             randint(0, GRID_WIDTH - 1) * GRID_SIZE,
             randint(0, GRID_HEIGHT - 1) * GRID_SIZE
         )
+        # if new_position not in self.occupied_positions:
+        #     self.position = new_position
+        
         return self.position
 
     def draw(self):
@@ -141,9 +145,10 @@ class Snake(GameObject):
     def move(self):
         """Обновляет позиции сегментов змейки"""
         head_x, head_y = self.get_head_position()
+        dir_x, dir_y = self.direction
         new_head = (
-            (head_x + self.direction[0] * GRID_SIZE) % SCREEN_WIDTH,
-            (head_y + self.direction[1] * GRID_SIZE) % SCREEN_HEIGHT
+            (head_x + dir_x * GRID_SIZE) % SCREEN_WIDTH,
+            (head_y + dir_y * GRID_SIZE) % SCREEN_HEIGHT
         )
         self.positions.insert(0, new_head)
         if len(self.positions) > self.length:
