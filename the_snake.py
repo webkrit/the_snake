@@ -64,7 +64,6 @@ class GameObject:
 
     def draw(self):
         """Отображает объект на экране"""
-        pass
 
 
 class Apple(GameObject):
